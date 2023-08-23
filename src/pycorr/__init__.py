@@ -4,9 +4,18 @@ import numpy
 import erfa
 import h5py
 
+compy = numpy
+
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.StreamHandler())
 logger.setLevel(logging.ERROR)
+
+try:
+	import cupy
+	compy = cupy
+except ImportError as err:
+	logger.info(f"{err}")
+	logger.warning("Could not import 'cupy', computation will occur on the CPU. Error precedes at the information level.")
 
 
 def upchannelise(
@@ -27,7 +36,7 @@ def upchannelise(
     A, F, T, P = datablock.shape
     assert T % rate == 0, f"Rate {rate} is not a factor of time {T}."
     datablock = datablock.reshape((A, F, T//rate, rate, P))
-    datablock = numpy.fft.fftshift(numpy.fft.fft(
+    datablock = compy.fft.fftshift(compy.fft.fft(
             datablock,
             axis=3
         ),
@@ -83,9 +92,9 @@ def correlation(
     assert P == 2, f"Expecting 2 polarisations"
     assert A > 1, f"Expecting more than 1 antenna"
 
-    datablock_conj = numpy.conjugate(datablock)
+    datablock_conj = compy.conjugate(datablock)
 
-    corr = numpy.zeros(
+    corr = compy.zeros(
         (
             A*(A+1)//2,
             F,
@@ -185,7 +194,7 @@ def get_uvw_array(
     sin_declination = numpy.sin(dec_rad)
     cos_declination = numpy.cos(dec_rad)
 
-    uvws = numpy.zeros(ant_coordinates.shape, dtype=numpy.float64)
+    uvws = compy.zeros(ant_coordinates.shape, dtype=numpy.float64)
 
     for ant in range(ant_coordinates.shape[0]):
         # RotZ(long-ha) anti-clockwise

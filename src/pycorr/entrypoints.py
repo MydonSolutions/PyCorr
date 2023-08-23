@@ -421,9 +421,9 @@ def main():
         datasize_processed = 0
         integration_count = 0
         # Integrate fine spectra in a separate buffer
-        integration_buffer = numpy.zeros(flags.shape, dtype="D")
+        integration_buffer = pycorr.compy.zeros(flags.shape, dtype="D")
         while True:
-            datablock = numpy.concatenate(
+            datablock = pycorr.compy.concatenate(
                 (datablock, guppi_data),
                 axis=2 # concatenate in time
             )
