@@ -13,6 +13,7 @@ logger.setLevel(logging.ERROR)
 try:
 	import cupy
 	compy = cupy
+	logger.info("Successfully imported 'cupy', computation will occur on the GPU.")
 except ImportError as err:
 	logger.info(f"{err}")
 	logger.warning("Could not import 'cupy', computation will occur on the CPU. Error precedes at the information level.")
