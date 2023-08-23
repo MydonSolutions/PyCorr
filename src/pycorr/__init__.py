@@ -10,14 +10,10 @@ logger = logging.getLogger(__name__)
 logger.addHandler(logging.StreamHandler())
 logger.setLevel(logging.ERROR)
 
-try:
-	import cupy
-	compy = cupy
-	logger.info("Successfully imported 'cupy', computation will occur on the GPU.")
-except ImportError as err:
-	logger.info(f"{err}")
-	logger.warning("Could not import 'cupy', computation will occur on the CPU. Error precedes at the information level.")
-
+def compute_with_cupy():
+    global compy
+    import cupy
+    compy = cupy
 
 def upchannelise(
     datablock: numpy.ndarray, # [Antenna, Frequency, Time, Polarization]

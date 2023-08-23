@@ -283,6 +283,13 @@ def main():
         ][args.verbose]
     )
 
+    try:
+        pycorr.compute_with_cupy()
+        logger.info("Successfully imported 'cupy', computation will occur on the GPU.")
+    except ImportError as err:
+        logger.info(f"{err}")
+        logger.warning("Could not import 'cupy', computation will occur on the CPU. Error precedes at the information level.")
+
     datablock_time_requirement = args.upchannelisation_rate
 
     telinfo = _get_telescope_metadata(args.telescope_info_filepath)
