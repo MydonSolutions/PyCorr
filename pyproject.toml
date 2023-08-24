@@ -21,7 +21,8 @@ dependencies = [
   "tomli",
   "pyerfa",
   "guppi @ git+https://github.com/wfarah/guppi",
-  "pyproj"
+  "pyproj",
+  "pyyaml"
 ]
 
 [project.scripts]
