@@ -34,6 +34,29 @@ def transform_antenna_positions_ecef_to_xyz(longitude_deg, latitude_deg, altitud
     for i in range(antenna_positions.shape[0]):
         antenna_positions[i, :] -= telescopeCenterXyz
 
+
+def transform_antenna_positions_enu_to_xyz(longitude_rad, latitude_rad, altitude, antenna_positions):
+    sin_long = numpy.sin(longitude_rad)
+    cos_long = numpy.cos(longitude_rad)
+    sin_lat = numpy.sin(latitude_rad)
+    cos_lat = numpy.cos(latitude_rad)
+
+    for ant in range(antenna_positions.shape[0]):
+        # RotX(latitude) anti-clockwise
+        x_ = antenna_positions[ant, 0]
+        y = cos_lat*antenna_positions[ant, 1] - (-sin_lat)*antenna_positions[ant, 2]
+        z = (-sin_lat)*antenna_positions[ant, 1] + cos_lat*antenna_positions[ant, 2]
+        
+        # RotY(latitude) clockwise
+        x = cos_lat*x_ + sin_lat*z
+        z = -sin_lat*x_ + cos_lat*z
+
+        # Permute (YZX) to (XYZ)
+        antenna_positions[ant, 0] = z
+        antenna_positions[ant, 1] = x
+        antenna_positions[ant, 2] = y
+
+
 def _get_telescope_metadata(telescope_info_filepath):
     """
     Returns a standardised formation of the TOML/YAML/BFR5 contents:
@@ -86,12 +109,18 @@ def _get_telescope_metadata(telescope_info_filepath):
     altitude = telescope_info["altitude"]
     antenna_positions = numpy.array([antenna["position"] for antenna in telescope_info["antennas"]])
 
-    # TODO handle enu
     telinfo_antposframe = telescope_info["antenna_position_frame"].lower()
-    assert telinfo_antposframe in ["xyz", "ecef"]
+    assert telinfo_antposframe in ["xyz", "ecef", "enu"]
 
     if telinfo_antposframe == "ecef":
         transform_antenna_positions_ecef_to_xyz(
+            longitude,
+            latitude,
+            altitude,
+            antenna_positions
+        )
+    if telinfo_antposframe == "enu":
+        transform_antenna_positions_enu_to_xyz(
             longitude,
             latitude,
             altitude,
