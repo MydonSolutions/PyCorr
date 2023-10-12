@@ -86,15 +86,15 @@ def _get_telescope_metadata(telescope_info_filepath):
     elif telinfo_ext in [".bfr5"]:
         with h5py.File(telescope_info_filepath, 'r') as f:
             telescope_info = {
-                "telescope_name": f["telinfo"]["telescope_name"][()],
+                "telescope_name": f["telinfo"]["telescope_name"][()].decode(),
                 "longitude": f["telinfo"]["longitude"][()],
                 "latitude": f["telinfo"]["latitude"][()],
                 "altitude": f["telinfo"]["altitude"][()],
-                "antenna_position_frame": f["telinfo"]["antenna_position_frame"][()],
+                "antenna_position_frame": f["telinfo"]["antenna_position_frame"][()].decode(),
                 "antennas": [
                     {
                         "number": antenna_number,
-                        "name": f["telinfo"]["antenna_names"][i],
+                        "name": f["telinfo"]["antenna_names"][i].decode(),
                         "position": f["telinfo"]["antenna_positions"][i],
                         "diameter": f["telinfo"]["antenna_diameters"][i],
                     }
