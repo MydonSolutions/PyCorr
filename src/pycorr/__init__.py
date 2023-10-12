@@ -22,7 +22,7 @@ def upchannelise(
             the FFT length
     """
     if rate == 1:
-        return
+        return datablock
 
     A, F, T, P = datablock.shape
     assert T % rate == 0, f"Rate {rate} is not a factor of time {T}."
