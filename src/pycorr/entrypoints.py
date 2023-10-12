@@ -308,7 +308,7 @@ def main():
     num_bls = len(ant_1_array)
 
     nants = guppi_header.get("NANTS", 1)
-    npol = guppi_header["NPOL"]
+    npol = guppi.npol # guppi handles meerkat's odd npol==4, use its resolution
     nchan = guppi_header["OBSNCHAN"] // nants
     ntimes = guppi_data.shape[2]
     schan = guppi_header.get("SCHAN", 0)
