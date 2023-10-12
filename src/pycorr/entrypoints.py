@@ -167,12 +167,6 @@ def filter_telinfo(
 
     if len(antenna_names) > 0:
         antenna_names = antenna_names[:nants]
-        antenna_telinfo = {
-            antenna["name"]: antenna
-            for antenna in telinfo["antennas"]
-            if antenna["name"] in antenna_names
-        }
-        assert len(antenna_telinfo) == len(antenna_names), f"Telescope information does not cover RAW listed antenna: {set(antenna_names).difference(set([ant['name'] for ant in telinfo['antennas']]))}"
     else:
         pycorr.logger.warning("No antenna names listed in the GUPPI header under 'ANTNMS%d{2}' entries. Using all provided antenna, sorted by number.")
         antenna_number_name_map = {
@@ -186,6 +180,12 @@ def filter_telinfo(
             for antnum in antenna_numbers
         ]
 
+    antenna_telinfo = {
+        antenna["name"]: antenna
+        for antenna in telinfo["antennas"]
+        if antenna["name"] in antenna_names
+    }
+    assert len(antenna_telinfo) == len(antenna_names), f"Telescope information does not cover RAW listed antenna: {set(antenna_names).difference(set([ant['name'] for ant in telinfo['antennas']]))}"
     
     return {
         "telescope_name": telinfo["telescope_name"],
