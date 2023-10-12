@@ -110,7 +110,7 @@ def _get_telescope_metadata(telescope_info_filepath):
     antenna_positions = numpy.array([antenna["position"] for antenna in telescope_info["antennas"]])
 
     telinfo_antposframe = telescope_info["antenna_position_frame"].lower()
-    assert telinfo_antposframe in ["xyz", "ecef", "enu"]
+    assert telinfo_antposframe in ["xyz", "ecef", "enu"], f"Unknown position frame {telinfo_antposframe}"
 
     if telinfo_antposframe == "ecef":
         transform_antenna_positions_ecef_to_xyz(
