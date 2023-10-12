@@ -4,7 +4,6 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "PyCorr"
-<<<<<<< HEAD
 version = "0.0.22"
 authors = [
   { name="Ross Donnachie", email="code@radonn.co.za" },
@@ -21,15 +20,10 @@ dependencies = [
   "h5py",
   "tomli",
   "pyerfa",
-<<<<<<< HEAD
   "guppi @ git+https://github.com/MydonSolutions/guppi/",
   "pyproj",
-  "pyyaml"
-=======
-  "guppi @ git+https://github.com/wfarah/guppi",
-  "pyproj",
+  "pyyaml",
   "numpy"
->>>>>>> ++ auto switch numpy with cupy if possible
 ]
 
 [project.scripts]
