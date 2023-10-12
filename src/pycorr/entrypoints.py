@@ -169,6 +169,7 @@ def filter_telinfo(
         antenna_names = antenna_names[:nants]
     else:
         pycorr.logger.warning("No antenna names listed in the GUPPI header under 'ANTNMS%d{2}' entries. Using all provided antenna, sorted by number.")
+        assert len(telinfo["antennas"]) == nants, f"GUPPI stipulates {nants} antenna(s), but provided positions for {len(telinfo['antennas'])} antenna(s)."
         antenna_number_name_map = {
             antenna["number"]: antenna["name"]
             for antenna in telinfo["antennas"]
