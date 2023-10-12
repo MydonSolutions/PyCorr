@@ -138,7 +138,7 @@ def _get_telescope_metadata(telescope_info_filepath):
                 "name": ant_info["name"],
                 "position": antenna_positions[ant_enum],
                 "number": int(ant_info.get("number", ant_enum)),
-                "diameter": ant_info.get("diameter", telescope_info["antenna_diameter"]),
+                "diameter": ant_info.get("diameter", telescope_info.get("antenna_diameter", None)),
             }
             for ant_enum, ant_info in enumerate(telescope_info["antennas"])
         ]
