@@ -430,7 +430,7 @@ def main():
         # Integrate fine spectra in a separate buffer
         integration_buffer = pycorr.compy.zeros(flags.shape, dtype="D")
         while True:
-            datablock = pycorr.compy.concatenate(
+            datablock = numpy.concatenate(
                 (datablock, guppi_data),
                 axis=2 # concatenate in time
             )
@@ -446,7 +446,7 @@ def main():
 
             while datablock.shape[2] >= datablock_time_requirement:
                 datablock_residual = datablock[:, :, datablock_time_requirement:, :]
-                datablock = datablock[:, :, 0:datablock_time_requirement, :]
+                datablock = pycorr.compy.array(datablock[:, :, 0:datablock_time_requirement, :])
 
                 datablock_bytesize = datablock.size * datablock.itemsize
 
@@ -504,7 +504,7 @@ def main():
                     ),
                     time_array,
                     integration_time,
-                    integration_buffer,
+                    integration_buffer.get() if not isinstance(integration_buffer, numpy.ndarray) else integration_buffer,
                     flags,
                     nsamples,
                 )

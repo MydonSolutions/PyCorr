@@ -74,11 +74,11 @@ def _correlate_antenna_data(
     assert ant1_data.shape == ant2_data.shape, f"Antenna data should have the same shape"
 
     P = ant1_data.shape[-1]
-    return numpy.transpose(
-        [
+    return compy.transpose(
+        compy.asarray([
             ant1_data[:, :, p1]*ant2_data[:, :, p2]
             for p1 in range(P) for p2 in range(P)
-        ],
+        ]),
         (1, 2, 0)
     )
 
@@ -191,7 +191,7 @@ def get_uvw_array(
     sin_declination = numpy.sin(dec_rad)
     cos_declination = numpy.cos(dec_rad)
 
-    uvws = compy.zeros(ant_coordinates.shape, dtype=numpy.float64)
+    uvws = numpy.zeros(ant_coordinates.shape, dtype=numpy.float64)
 
     for ant in range(ant_coordinates.shape[0]):
         # RotZ(long-ha) anti-clockwise
